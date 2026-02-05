@@ -1,26 +1,26 @@
 import 'reflect-metadata';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 dotenv.config();
 import express from 'express';
 import { poolPromise } from './infrastructure/database/typeorm/mssql-pool.js';
-import { CompanyRepositoryImpl } from './infrastructure/database/typeorm/repositories/CompanyRepositoryImpl.js';
-import { GetCompanies } from './application/use-cases/GetCompanies.js';
+import { CecoNameRepositoryImpl } from './infrastructure/database/typeorm/repositories/CecoNameRepositoryImpl.js';
+import { GetCecoNames } from './application/use-cases/GetCecoNames.js';
+import { GetCecoNameById } from './application/use-cases//GetCecoNameById.js';
+import { CecoNameController } from './infrastructure/http/controllers/CecoNameController.js';
 const app = express();
 app.use(express.json());
-const pool = await poolPromise;
-const repo = new CompanyRepositoryImpl(pool);
-const getCompaniesUseCase = new GetCompanies(repo);
-app.get('/companies', async (req, res) => {
-  try {
-    const companies = await getCompaniesUseCase.execute();
-    res.json(companies);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      error: 'Error obteniendo compañías'
-    });
-  }
-});
-app.listen(3001, () => {
-  console.log('🚀 Microservicio de Compañías (ODBC Nativo) en puerto 3001');
+// app.use(morgan('dev')); <-- Usar morgan en caso de necesitar observar los tiempos de respuesta, en controllers ya se imprimen respuestas de petición
+const pool = await poolPromise; // Conexion a la pool mssql  
+
+const repo = new CecoNameRepositoryImpl(pool);
+const getCecoNameUseCase = new GetCecoNames(repo);
+const getCecoNameByIdUseCase = new GetCecoNameById(repo);
+const CecoameController = new CecoNameController(getCecoNameUseCase, getCecoNameByIdUseCase);
+
+//Endpoints de companies 
+app.get('/ceconame', (req, res) => CecoameController.getAll(req, res));
+app.get('/ceconame/:id', (req, res) => CecoameController.getById(req, res));
+app.listen(3002, () => {
+  console.log('🚀 Microservicio de Compañías (ODBC Nativo) en puerto 3002');
 });

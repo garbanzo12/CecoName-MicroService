@@ -22,4 +22,4 @@ DB_DOMAIN=tu_dominio
 npm install dotenv express msnodesqlv8 mssql reflect-metadata morgan
 
 # El proyecto usa decorators, por tanto se usa babel decorators
-npm install -D @babel/cli @babel/core @babel/plugin-proposal-class-properties @babel/plugin-proposal-decorators @babel/preset-env nodemon
+npm install -D @babel/cli @babel/core @babel/plugin-proposal-class-properties @babel/plugin-proposal-decorators @babel/preset-env @babel/plugin-transform-private-methods nodemon 

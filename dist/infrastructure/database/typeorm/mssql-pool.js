@@ -1,17 +1,20 @@
 import sql from 'mssql/msnodesqlv8.js';
 import dotenv from 'dotenv';
+import { config } from '../../../shared/config/index.js';
 dotenv.config();
-const config = {
-  server: process.env.DB_SERVER,
-  database: process.env.DB_DATABASE,
-  connectionString: `Driver={ODBC Driver 18 for SQL Server};Server=${process.env.DB_SERVER};Database=${process.env.DB_DATABASE};Trusted_Connection=yes;Encrypt=yes;TrustServerCertificate=yes;`,
+
+//Conexion a la bd mediante las variables del archivo index.js de la carpeta config
+const dbconfig = {
+  server: config.database.server,
+  database: config.database.name,
+  connectionString: `Driver={ODBC Driver 18 for SQL Server};Server=${config.database.server};Database=${config.database.name};Trusted_Connection=yes;Encrypt=yes;TrustServerCertificate=yes;`,
   driver: 'msnodesqlv8',
   options: {
     trustedConnection: true,
     trustServerCertificate: true
   }
 };
-export const poolPromise = new sql.ConnectionPool(config).connect().then(pool => {
+export const poolPromise = new sql.ConnectionPool(dbconfig).connect().then(pool => {
   console.log('✅ Conectado a SQL Server (vía ODBC Nativo)');
   return pool;
 }).catch(err => {

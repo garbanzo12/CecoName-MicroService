@@ -10,7 +10,7 @@ npm run build
 npm start
 
 # Crea un archivo .env en la raíz del proyecto basándote en la siguiente plantilla:
-PORT=3001
+PORT=3002
 DB_SERVER=tu_server
 DB_DATABASE=DBGERH_Talent
 DB_USER=tu_usuario

@@ -1,5 +1,5 @@
 # companies-service
-Este es un microservicio de companies para DBGERH_Talent
+Este es un microservicio de CecoName para DBGERH_Talent
 
 
 # Pasos para levantar el proyecto
